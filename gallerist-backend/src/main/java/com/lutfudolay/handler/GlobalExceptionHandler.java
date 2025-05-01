@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Flow.Subscriber;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,7 +64,7 @@ public class GlobalExceptionHandler {
 		apiError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		
 		Exception<E> exception = new Exception<>();
-		exception.setPath(request.getDescription(false));;
+		exception.setPath(request.getDescription(false).substring(4));;
 		exception.setCreateTime(new Date());
 		exception.setMessage(message);
 		exception.setHostName(getHostName());
