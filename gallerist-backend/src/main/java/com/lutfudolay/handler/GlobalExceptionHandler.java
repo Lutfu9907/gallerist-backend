@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
 		apiError.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		
 		Exception<E> exception = new Exception<>();
-		exception.setPath(request.getDescription(false).substring(4));;
+		exception.setPath(request.getDescription(false).substring(4));
 		exception.setCreateTime(new Date());
 		exception.setMessage(message);
 		exception.setHostName(getHostName());
