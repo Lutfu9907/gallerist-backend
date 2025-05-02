@@ -2,10 +2,12 @@ package com.lutfudolay.jwt;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.function.Function;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -25,10 +27,28 @@ public class JWTService {
 		.compact();
 	}
 	
-	public Claims getClaims(String token) {
-		
+	public <T> T exportToken(String token, Function<Claims, T> claimsFunc) {
+		Claims claims = getClaims(token);
+		return claimsFunc.apply(claims);
 	}
 	
+	public Claims getClaims(String token) {
+		Claims claims = Jwts.parserBuilder()
+		.setSigningKey(getKey())
+		.build()
+		.parseClaimsJws(token).getBody();
+		
+		return claims;
+	}
+	
+	public String getUserNameByToken(String token) {
+		return exportToken(token, Claims::getSubject);
+	}
+	
+	public boolean isTokenValid(String token) {
+		Date expireDate = exportToken(token, Claims::getExpiration);
+		return new Date().before(expireDate);
+	}
 	
 	
 	public Key getKey() {
