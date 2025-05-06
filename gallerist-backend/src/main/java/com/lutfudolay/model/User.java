@@ -24,7 +24,7 @@ import lombok.Setter;
 public class User extends BaseEntity implements UserDetails{
 
 	@Column(name = "username")
-	private String userName;
+	private String username;
 	
 	@Column(name = "password")
 	private String password;
