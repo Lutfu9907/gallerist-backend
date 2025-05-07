@@ -7,9 +7,11 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.lutfudolay.handler.AuthEntryPoint;
 import com.lutfudolay.jwt.JWTAuthenticationFilter;
 
 @Configuration
@@ -26,6 +28,9 @@ public class SecurityConfig {
 	@Autowired
 	private JWTAuthenticationFilter jwtAuthenticationFilter;
 	
+	@Autowired
+	private AuthEntryPoint authEntryPoint;
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable()
@@ -33,6 +38,7 @@ public class SecurityConfig {
 		request.requestMatchers(REGISTER, AUTHENTICATE, REFRESH_TOKEN).permitAll()
 		.anyRequest()
 		.authenticated())
+		.exceptionHandling().authenticationEntryPoint(authEntryPoint).and()
 		.sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authenticationProvider(authenticationProvider)
 		.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

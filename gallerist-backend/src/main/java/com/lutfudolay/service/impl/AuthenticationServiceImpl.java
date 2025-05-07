@@ -24,10 +24,6 @@ import com.lutfudolay.repository.RefreshTokenRepository;
 import com.lutfudolay.repository.UserRepository;
 import com.lutfudolay.service.IAuthenticationService;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Service
 public class AuthenticationServiceImpl implements IAuthenticationService{
 
