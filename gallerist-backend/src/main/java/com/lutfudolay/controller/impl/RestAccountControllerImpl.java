@@ -6,27 +6,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lutfudolay.controller.IRestAddressController;
+import com.lutfudolay.controller.IRestAccountController;
 import com.lutfudolay.controller.RestBaseController;
 import com.lutfudolay.controller.RootEntity;
-import com.lutfudolay.dto.DtoAddress;
-import com.lutfudolay.dto.DtoAddressIU;
-import com.lutfudolay.service.IAddressService;
+import com.lutfudolay.dto.DtoAccount;
+import com.lutfudolay.dto.DtoAccountIU;
+import com.lutfudolay.service.IAccountService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("rest/api/address")
-public class RestAddressControllerImpl extends RestBaseController implements IRestAddressController{
+@RequestMapping("rest/api/account")
+public class RestAccountControllerImpl extends RestBaseController implements IRestAccountController{
 
 	@Autowired
-	private IAddressService addressService;
-	
+	private IAccountService accountService;
+
 	@PostMapping("/save")
 	@Override
-	public RootEntity<DtoAddress> savedAddress(@Valid @RequestBody DtoAddressIU dtoAddressIU) {
+	public RootEntity<DtoAccount> savedAccount(@Valid @RequestBody DtoAccountIU dtoAccountIU) {
 		
-		return ok(addressService.savedAddress(dtoAddressIU));
+		return ok(accountService.savedAccount(dtoAccountIU));
 	}
-
+	
 }
