@@ -10,6 +10,7 @@ import com.lutfudolay.controller.RootEntity;
 import com.lutfudolay.dto.AuthRequest;
 import com.lutfudolay.dto.AuthResponse;
 import com.lutfudolay.dto.DtoUser;
+import com.lutfudolay.dto.RefreshTokenRequest;
 import com.lutfudolay.service.IAuthenticationService;
 
 import jakarta.validation.Valid;
@@ -32,5 +33,12 @@ public class RestAuthenticationControllerImpl extends RestBaseController impleme
 	public RootEntity<AuthResponse> authenticate(@Valid @RequestBody AuthRequest input) {
 		
 		return ok(authenticationService.authenticate(input));
+	}
+
+	@PostMapping("/refreshToken")
+	@Override
+	public RootEntity<AuthResponse> refreshToken(@Valid @RequestBody RefreshTokenRequest input) {
+		
+		return ok(authenticationService.refreshToken(input));
 	}
 }
