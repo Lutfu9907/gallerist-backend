@@ -1,20 +1,16 @@
 package com.lutfudolay.service.impl;
 
-import java.lang.annotation.Retention;
-import java.lang.classfile.instruction.ReturnInstruction;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.lutfudolay.dto.AuthRequest;
 import com.lutfudolay.dto.AuthResponse;
 import com.lutfudolay.dto.DtoUser;
@@ -111,7 +107,7 @@ public class AuthenticationServiceImpl implements IAuthenticationService{
 			throw new BaseException(new ErrorMessage(MessageType.REFRESH_TOKEN_NOT_FOUND, input.getRefreshToken()));
 		}
 		
-		if(isValidRefreshToken(optRefreshToken.get().getExpiredDate())) {
+		if(!isValidRefreshToken(optRefreshToken.get().getExpiredDate())) {
 			throw new BaseException(new ErrorMessage(MessageType.REFRESH_TOKEN_IS_EXPIRED, input.getRefreshToken()));
 	}
 		User user = optRefreshToken.get().getUser();
