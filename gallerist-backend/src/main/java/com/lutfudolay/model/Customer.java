@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer extends BaseEntity{
-
+ 
 	@Column(name = "first_name")
 	private String firstName;
 	
