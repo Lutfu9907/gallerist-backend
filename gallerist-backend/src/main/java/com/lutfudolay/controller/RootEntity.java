@@ -1,14 +1,10 @@
 package com.lutfudolay.controller;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@JsonInclude(value = Include.NON_NULL)
 
 public class RootEntity<T> {
 
@@ -24,7 +20,7 @@ public class RootEntity<T> {
 		rootEntity.setPayload(payload);
 		rootEntity.setErrorMessage(null);
 		
-		return null;
+		return rootEntity;
 	}
 	
 	public static <T> RootEntity<T> error(String errorMessage){
