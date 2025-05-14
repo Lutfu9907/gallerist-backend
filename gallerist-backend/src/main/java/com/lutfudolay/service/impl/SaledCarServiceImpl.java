@@ -5,10 +5,14 @@ import java.math.RoundingMode;
 import java.util.Date;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lutfudolay.dto.CurrencyRatesResponse;
+import com.lutfudolay.dto.DtoCar;
+import com.lutfudolay.dto.DtoCustomer;
+import com.lutfudolay.dto.DtoGallerist;
 import com.lutfudolay.dto.DtoSaledCar;
 import com.lutfudolay.dto.DtoSaledCarIU;
 import com.lutfudolay.enums.CarStatusType;
@@ -61,6 +65,17 @@ public class SaledCarServiceImpl implements ISaledCarService{
 		return true;
 	}
 	
+	public BigDecimal remainingCustomerAmount(Customer customer, Car car) {
+		BigDecimal customerUSDAmount = convertCustomerAmountToUSD(customer);
+		BigDecimal remainingCustomerUSDAmount = customerUSDAmount.subtract(car.getPrice());
+		
+		CurrencyRatesResponse currencyRatesResponse = currencyRatesService.getCurrencyRates(DateUtils.getCurrentDate(new Date()), DateUtils.getCurrentDate(new Date()));
+		
+		BigDecimal usd = new BigDecimal(currencyRatesResponse.getItems().get(0).getUsd());
+		
+		return remainingCustomerUSDAmount.multiply(usd);
+	}
+	
 	public boolean checkAmount(DtoSaledCarIU dtoSaledCarIU) {
 		
 		Optional<Customer> optCustomer = customerRepository.findById(dtoSaledCarIU.getCustomerId());
@@ -111,8 +126,29 @@ public class SaledCarServiceImpl implements ISaledCarService{
 		
 		carRepository.save(car);
 		
+		Customer customer = saveSaledCar.getCustomer();
+		customer.getAccount().setAmount(remainingCustomerAmount(customer,car));
+		customerRepository.save(customer);
 		
+		return toDTO(saveSaledCar);
+	}
+	
+	
+	public DtoSaledCar toDTO(SaledCar saledCar) {
+		DtoSaledCar dtoSaledCar = new DtoSaledCar();
+		DtoCustomer dtoCustomer = new DtoCustomer();
+		DtoGallerist dtoGallerist = new DtoGallerist();
+		DtoCar dtoCar = new DtoCar();
 		
-		return null;
+		BeanUtils.copyProperties(saledCar, dtoSaledCar);
+		BeanUtils.copyProperties(saledCar.getCustomer(), dtoCustomer);
+		BeanUtils.copyProperties(saledCar.getGallerist(), dtoGallerist);
+		BeanUtils.copyProperties(saledCar.getCar(), dtoCar);
+		
+		dtoSaledCar.setCustomer(dtoCustomer);
+		dtoSaledCar.setGallerist(dtoGallerist);
+		dtoSaledCar.setCar(dtoCar);
+		
+		return dtoSaledCar;
 	}
 }
