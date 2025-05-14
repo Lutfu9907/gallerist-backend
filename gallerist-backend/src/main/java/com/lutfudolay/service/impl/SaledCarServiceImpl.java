@@ -111,12 +111,12 @@ public class SaledCarServiceImpl implements ISaledCarService{
 	@Override
 	public DtoSaledCar buyCar(DtoSaledCarIU dtoSaledCarIU) {
 
-		if (checkAmount(dtoSaledCarIU)) {
-			throw new BaseException(new ErrorMessage(MessageType.CUSTOMER_AMOUNT_IS_NOT_ENOUGH, ""));
-		}
-		
 		if (!checkCarStatus(dtoSaledCarIU.getCarId())) {
 			throw new BaseException(new ErrorMessage(MessageType.CAR_STATUS_IS_ALREADY_SALED,dtoSaledCarIU.getCarId().toString()));
+		}
+		
+		if (checkAmount(dtoSaledCarIU)) {
+			throw new BaseException(new ErrorMessage(MessageType.CUSTOMER_AMOUNT_IS_NOT_ENOUGH, ""));
 		}
 		
 		SaledCar saveSaledCar = saledCarRepository.save(createSaledCar(dtoSaledCarIU));
