@@ -1,5 +1,6 @@
 package com.lutfudolay.service.impl;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,9 @@ import com.lutfudolay.service.ICurrencyRatesService;
 @Service
 public class CurrencyRatesServiceImpl implements ICurrencyRatesService{
 
+	@Value("${tcmb.evds.api-key}")
+	private String apiKey;
+
 	@Override
 	public CurrencyRatesResponse getCurrencyRates(String startDate, String endDate) {
 
@@ -27,7 +31,7 @@ public class CurrencyRatesServiceImpl implements ICurrencyRatesService{
 		String endpoint = rootURL + "series=" + series + "&startDate=" + startDate + "&endDate=" + endDate + "&type=" + type;
 		
 		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.set("key", "SdIeCLcUuf");
+		httpHeaders.set("key", apiKey);
 		
 		HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
 		

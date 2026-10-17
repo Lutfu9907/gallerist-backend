@@ -60,8 +60,11 @@ Java · Spring Boot · Spring Security · JWT (jjwt) · Spring Data JPA · Postg
 
 ## 🚀 Getting Started
 
+Get a free API key from [TCMB EVDS](https://evds2.tcmb.gov.tr), then:
+
 ```bash
 cd gallerist-backend
+export TCMB_API_KEY=your_evds_key
 ./mvnw spring-boot:run
 ```
 

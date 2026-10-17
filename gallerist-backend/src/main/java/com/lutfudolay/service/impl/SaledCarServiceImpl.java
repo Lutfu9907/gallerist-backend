@@ -115,7 +115,7 @@ public class SaledCarServiceImpl implements ISaledCarService{
 			throw new BaseException(new ErrorMessage(MessageType.CAR_STATUS_IS_ALREADY_SALED,dtoSaledCarIU.getCarId().toString()));
 		}
 		
-		if (checkAmount(dtoSaledCarIU)) {
+		if (!checkAmount(dtoSaledCarIU)) {
 			throw new BaseException(new ErrorMessage(MessageType.CUSTOMER_AMOUNT_IS_NOT_ENOUGH, ""));
 		}
 		
